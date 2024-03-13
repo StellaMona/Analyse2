@@ -1,0 +1,81 @@
+public interface BusState {
+	
+	public void pushopendoorbutton();
+	public void pushstopbutton();
+	void setContext(Bus context);
+	
+
+}
+
+public class Marche implements BusState{
+	
+	private Bus context;
+
+	@Override
+	public void setContext(Bus context) {
+		this.context = context;
+	}
+
+	@Override
+	public void pushopendoorbutton() {
+		System.out.println("Bus en Marche");
+		this.context.turnSignalOn();
+		
+	}
+
+	@Override
+	public void pushstopbutton() {
+		System.out.println("Bus en Marche");
+		this.context.turnSignalOn();
+		
+	}
+}
+
+public class Bus {
+	
+	private BusState state;
+	
+	public Bus() {
+		Marche march = new Marche();
+		march.setContext(this);
+		this.setState(march);
+	}
+	
+	public void setState(BusState Newstate) {
+		this.state = Newstate;
+		this.state.setContext(this);
+	}
+
+	
+	public void pushopendoorbutton() {
+		this.state.pushopendoorbutton();
+	}
+	
+	public void pushstopbutton() {
+		this.state.pushstopbutton();;
+	}
+	
+
+	public void turnSignalOn() {
+		System.out.println("Signal ON");
+		
+	}
+	
+	public void turnSignalOff() {
+		System.out.println("Signal Off");
+		
+	}
+
+	public void OpenDoor() {
+		System.out.println("Porte Ouverte");
+		
+	}
+	
+	public void CloseDoor() {
+		System.out.println("Porte ferme");
+		
+	}
+	
+
+
+}
