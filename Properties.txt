@@ -1,0 +1,55 @@
+public class Configurator {
+
+	// default configuration
+	private static final String DEFAULT_ENVIRONMENT = "generic";
+	private static final String DEFAULT_FORMATTER = "PDFFormatter";
+	private Properties properties; 
+
+	public Configurator() {		
+		this.properties = new Properties();
+		this.loadProperties();
+	}
+
+	public void configure(Configurable configurable)  {		
+		// get environment to use from properties
+		String environment = (String)this.properties.getProperty("environment");
+		// if no name specified, used default
+		environment = (environment != null && !environment.isEmpty()) ? environment : DEFAULT_ENVIRONMENT;
+		
+		// get formatter name to use from properties based on environment 
+		String formatterName = (String)this.properties.getProperty(environment);
+		// if no name specified, used default
+		formatterName = (formatterName != null && !formatterName.isEmpty()) ? formatterName : DEFAULT_FORMATTER;
+
+		// create formatter instance based on formatter name
+		Formatter formatter = null;
+		switch(formatterName) {
+			case "PDFFormatter": formatter = new PDFFormatter();
+			break;
+			case "WordFormatter": formatter = new WordFormatter();
+			break;	
+		}	
+		// inject the dependency with formatter into configurable
+		configurable.configure(formatter);
+	}
+
+	private void loadProperties() {
+		try (InputStream resource = this.getClass().getResourceAsStream("config.properties")) {
+
+			this.properties.load(resource);
+		} catch (Exception e) {
+			System.out.println("Could not load configuration file. Using default configuration");
+			//e.printStackTrace();
+			// use default configuration
+			this.properties.setProperty("environment", DEFAULT_ENVIRONMENT);
+			this.properties.setProperty("generic", DEFAULT_FORMATTER);
+			this.properties.setProperty("windows", DEFAULT_FORMATTER);
+		}		
+	}	
+}
+
+
+
+environment=generic
+generic=PDFFormatter
+windows=WordFormatter
