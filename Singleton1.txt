@@ -1,0 +1,15 @@
+public class DataCache {
+
+	private static DataCache self = new DataCache();
+	
+	public static DataCache getInstance() {
+		return self;
+	}
+	
+	public boolean hasExpiredOrNotFound(String query) {return false;}
+
+	public void put(String query, BusinessData businessData) {}
+
+	public BusinessData get(String query) {	return null;}
+
+}
