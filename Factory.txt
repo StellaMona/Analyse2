@@ -1,0 +1,24 @@
+public class WeaponFactory {
+	
+	private static WeaponFactory self;
+	private Weapon weapon;
+	
+	private WeaponFactory() {
+		
+	}
+	
+	public static WeaponFactory getInstance() {
+		if (self == null) {
+			self = new WeaponFactory();
+		} return self;
+	}
+	
+	public Weapon getWeapon(int experience) { 
+		switch(experience) {
+		case 1: return new Gun();
+		case 2: return new Rifle();
+		case 3: return new Shotgun();
+		default: return new Gun();
+		}
+	}
+}
